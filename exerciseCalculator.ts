@@ -7,7 +7,7 @@ const parseArguments = (args: string[]): exerciseValues => {
     if (args.length < 4) throw new Error('Not enough arguments');
     
     let notNumberFound = false;
-    let targetHours;
+    let targetHours: number = 0;
     
     if (!isNaN(Number(args[2])))
         targetHours = Number(args[2]);
