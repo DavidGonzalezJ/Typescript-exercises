@@ -1,3 +1,35 @@
+interface exerciseValues {
+    target: number;
+    dailyHours: number[];
+}
+
+const parseArguments = (args: string[]): exerciseValues => {
+    if (args.length < 4) throw new Error('Not enough arguments');
+    
+    let notNumberFound = false;
+    let targetHours;
+    
+    if (!isNaN(Number(args[2])))
+        targetHours = Number(args[2]);
+    else
+        notNumberFound = true;
+
+    let i = 3; //While iterator
+    let numbers: number[] = [];
+    while(!notNumberFound && i < args.length) {
+        if(!isNaN(Number(args[i])))
+            numbers = numbers.concat(Number(args[i]));
+        else
+            notNumberFound = true;
+        i++;
+    }
+    if(!notNumberFound)
+        return { target: targetHours, dailyHours: numbers }
+    else {
+        throw new Error('Provided values were not numbers!');
+    }
+}
+
 interface Result {
     periodLength: number;
     trainingDays: number;
@@ -52,4 +84,13 @@ const calculateExercises = (dailyHours: number[], targetAverage: number): Result
     return res;
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1],2))
+try {
+    const { target, dailyHours } = parseArguments(process.argv);
+    console.log(calculateExercises(dailyHours, target));
+} catch (error: unknown) {
+    let errorMessage = 'Something bad happened.';
+    if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+    }
+    console.log(errorMessage);
+}
