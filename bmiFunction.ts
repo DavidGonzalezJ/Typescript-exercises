@@ -28,4 +28,4 @@ export const calculateBmi = (height: number, weight: number): string => {
         default:
             return "Obese (Class II)";
     }
-}
+};
